@@ -1427,7 +1427,7 @@ public:
 
   std::shared_ptr<Ope> ope_;
   Definition *outer_;
-  mutable once_flag trace_name_init_;
+  mutable once_flag trace_name_init_ = false;
   mutable std::string trace_name_;
 
   friend class Definition;
@@ -2442,10 +2442,10 @@ private:
   }
 
   std::shared_ptr<Holder> holder_;
-  mutable once_flag is_token_init_;
+  mutable once_flag is_token_init_ = false;
   mutable bool is_token_ = false;
   mutable once_flag assign_id_to_definition_init_;
-  mutable once_flag definition_ids_init_;
+  mutable once_flag definition_ids_init_ = false;
   mutable std::unordered_map<void *, size_t> definition_ids_;
 };
 
@@ -2885,7 +2885,7 @@ inline size_t BackReference::parse_core(const char *s, size_t n,
     const auto &cs = c.capture_scope_stack[index];
     if (cs.find(name_) != cs.end()) {
       const auto &lit = cs.at(name_);
-      once_flag init_is_word;
+      once_flag init_is_word = false;
       auto is_word = false;
       return parse_literal(s, n, vs, c, dt, lit, init_is_word, is_word, false);
     }
