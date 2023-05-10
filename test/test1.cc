@@ -401,7 +401,7 @@ TEST(GeneralTest, Skip_token_test2) {
 }
 
 TEST(GeneralTest, Custom_AST_test) {
-  struct CustomType {};
+  struct CustomType { bool dummy = false; };
   using CustomAst = AstBase<CustomType>;
 
   parser parser(R"(
@@ -1233,3 +1233,33 @@ LINE_END               <-  '\r\n' / '\r' / '\n' / !.
   }
 }
 
+TEST(GeneralTest, ChoiceWithWhitespace) {
+  auto parser = peg::parser(R"(
+    type <- 'string' / 'int' / 'double'
+    %whitespace <- ' '*
+  )");
+
+  parser["type"] = [](const SemanticValues &vs) {
+    auto n = vs.choice();
+    EXPECT_EQ(1, n);
+  };
+
+  auto ret = parser.parse("int");
+  EXPECT_TRUE(ret);
+}
+
+TEST(GeneralTest, PassingContextAndOutputParameter) {
+  parser parser(R"(
+        START  <- TOKEN
+        TOKEN  <- [0-9]+
+    )");
+
+  parser["TOKEN"] = [&](const peg::SemanticValues &vs, std::any & /*dt*/) {
+    return vs.token_to_number<int>();
+  };
+
+  int output = 0;
+  std::any dt = std::string{"context"};
+  parser.parse<int>("42", dt, output);
+  EXPECT_EQ(42, output);
+}

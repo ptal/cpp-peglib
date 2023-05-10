@@ -17,8 +17,6 @@ else()
 endif()
 
 option(PEGLIB_BUILD_TESTS "Build cpp-peglib tests" ON)
-option(PEGLIB_BUILD_LINT "Build cpp-peglib lint" ON)
-option(PEGLIB_BUILD_EXAMPLE "Build cpp-peglib examples" ON)
 
 if(${PEGLIB_BUILD_LINT})
 add_subdirectory(lint)
@@ -29,7 +27,7 @@ add_subdirectory(example)
 # add_subdirectory(cymbol)
 endif()
 
-if (${PEGLIB_BUILD_TESTS})
+if (${BUILD_TESTS})
   add_subdirectory(test)
   enable_testing()
 endif()
