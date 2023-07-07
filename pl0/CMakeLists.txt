@@ -1,7 +1,7 @@
 /Users/yhirose/Projects/cpp-peglib/.travis.yml
 project(pl0)
 
-include_directories(..)
+include_directories(../include)
 
 add_executable(pl0 pl0.cc)
 find_package(LLVM REQUIRED CONFIG)

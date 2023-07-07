@@ -6,7 +6,7 @@ if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
 endif()
 
 add_library(cpp_peglib INTERFACE)
-target_include_directories(cpp_peglib INTERFACE ${CMAKE_SOURCE_DIR})
+target_include_directories(cpp_peglib INTERFACE include)
 target_compile_features(cpp_peglib INTERFACE cxx_std_20)
 
 option(PEGLIB_BUILD_TESTS "Build cpp-peglib tests" OFF)

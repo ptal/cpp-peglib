@@ -20,7 +20,7 @@ enable_testing()
 
 add_executable(test-main test1.cc test2.cc test3.cc)
 
-target_include_directories(test-main PRIVATE ..)
+target_include_directories(test-main PRIVATE ../include)
 
 include(GoogleTest)
 gtest_discover_tests(test-main)
