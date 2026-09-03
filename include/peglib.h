@@ -608,7 +608,7 @@ template <typename F, typename... Args> std::any call(F fn, Args &&...args) {
   using R = decltype(fn(std::forward<Args>(args)...));
   if constexpr (std::is_void<R>::value) {
     fn(std::forward<Args>(args)...);
-    return std::any();
+    return {};
   } else if constexpr (std::is_same<typename std::remove_cv<R>::type,
                                     std::any>::value) {
     return fn(std::forward<Args>(args)...);
@@ -2824,7 +2824,7 @@ inline std::any Holder::reduce(SemanticValues &vs, std::any &dt) const {
   if (outer_->action && !outer_->disable_action) {
     return outer_->action(vs, dt);
   } else if (vs.empty()) {
-    return std::any();
+    return {};
   } else {
     return std::move(vs.front());
   }
@@ -2926,14 +2926,14 @@ inline size_t PrecedenceClimbing::parse_expression(const char *s, size_t n,
   auto &rule = get_reference_for_binop(c);
   auto action = std::move(rule.action);
 
-  rule.action = [&](SemanticValues &vs2, std::any &dt2) {
+  rule.action = [&](SemanticValues &vs2, std::any &dt2) -> std::any {
     tok = vs2.token();
     if (action) {
       return action(vs2, dt2);
     } else if (!vs2.empty()) {
       return vs2[0];
     }
-    return std::any();
+    return {};
   };
   auto action_se = scope_exit([&]() { rule.action = std::move(action); });
 
